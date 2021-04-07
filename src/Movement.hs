@@ -34,14 +34,8 @@ handleKeys _ gs = gs {direction = None}
 
 checkSpeed :: GameState -> Float
 checkSpeed gs
-  | direction gs == U || direction gs == R || direction gs == L || direction gs == D =
-    if speed gs > 5.0
-      then 5.0
-      else speed gs + 0.5
-  | otherwise =
-    if speed gs <= 0
-      then 0
-      else speed gs - 0.5
+  | direction gs == U || direction gs == R || direction gs == L || direction gs == D = tileSize 
+  | otherwise = 0
 
 move :: MoveDirection -> GameState -> GameState
 move R gs =
@@ -62,7 +56,7 @@ move R gs =
           then
             GameState
               { position = (fst (position gs) + speed gs, snd (position gs)),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel =
                   moveBox
@@ -75,7 +69,7 @@ move R gs =
           else
             GameState
               { position = (fst (position gs) + speed gs, snd (position gs)),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel = currentLevel gs,
                 spriteCount = spriteCount gs,
@@ -92,11 +86,11 @@ move L gs =
           'b'
           && ( isCollision
                  gs
-                 (fst (position gs) + tileSize, snd (position gs))
+                 (fst (position gs) + tileSize * (-1), snd (position gs))
                  '*'
                  || isCollision
                    gs
-                   (fst (position gs) + tileSize, snd (position gs))
+                   (fst (position gs) + tileSize * (-1), snd (position gs))
                    'b'
              )
           then
@@ -105,7 +99,7 @@ move L gs =
                   ( fst (position gs) + speed gs * (- 1),
                     snd (position gs)
                   ),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel =
                   moveBox
@@ -121,7 +115,7 @@ move L gs =
                   ( fst (position gs) + speed gs * (- 1),
                     snd (position gs)
                   ),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel = currentLevel gs,
                 spriteCount = spriteCount gs,
@@ -148,7 +142,7 @@ move U gs =
           then
             GameState
               { position = (fst (position gs), snd (position gs) + speed gs),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel =
                   moveBox
@@ -161,7 +155,7 @@ move U gs =
           else
             GameState
               { position = (fst (position gs), snd (position gs) + speed gs),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel = currentLevel gs,
                 spriteCount = spriteCount gs,
@@ -178,11 +172,11 @@ move D gs =
           'b'
           && ( isCollision
                  gs
-                 (fst (position gs), snd (position gs) + tileSize)
+                 (fst (position gs), snd (position gs) + tileSize * (-1))
                  '*'
                  || isCollision
                    gs
-                   (fst (position gs), snd (position gs) + tileSize)
+                   (fst (position gs), snd (position gs) + tileSize * (-1))
                    'b'
              )
           then
@@ -191,7 +185,7 @@ move D gs =
                   ( fst (position gs),
                     snd (position gs) + speed gs * (- 1)
                   ),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel =
                   moveBox
@@ -207,7 +201,7 @@ move D gs =
                   ( fst (position gs),
                     snd (position gs) + speed gs * (- 1)
                   ),
-                direction = direction gs,
+                direction = None,
                 heading = heading gs,
                 currentLevel = currentLevel gs,
                 spriteCount = spriteCount gs,

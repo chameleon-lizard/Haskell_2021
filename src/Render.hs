@@ -1,16 +1,16 @@
 module Render where
 
-import Types
 import Graphics.Gloss
+import Types
 
 -------------------------------------------------------------------------------
 
 whatImg :: Cell -> [Picture] -> Picture
 whatImg (_, cellType) [wall, storage, box, floor, _]
-    | cellType == 'b' = box
-    | cellType == 's' = storage 
-    | cellType == '*' = wall
-    | otherwise = floor
+  | cellType == 'b' = box
+  | cellType == 's' = storage
+  | cellType == '*' = wall
+  | otherwise = floor
 
 drawTile :: Cell -> [Picture] -> Picture
 drawTile cell imgs =
@@ -20,9 +20,9 @@ render :: GameState -> [Picture] -> Picture
 render gs imgs =
   pictures
     ( [drawTile cell imgs | cell <- currentLevel gs]
-        ++ [ translate
-               (fst (position gs))
-               (snd (position gs) + 10)
+        ++ [ uncurry
+               translate
+               (position gs)
                (imgs !! 4)
            ]
     )
