@@ -6,20 +6,17 @@ cradle:
     - path: "./app/Main.hs"
       component: "sokoban:exe:sokoban-exe"
     
-    - path: "./app/Types.hs"
+    - path: "./lib/Types.hs"
       component: "sokoban:exe:sokoban-exe"
     
-    - path: "./app/Movement.hs"
+    - path: "./lib/Movement.hs"
       component: "sokoban:exe:sokoban-exe"
     
-    - path: "./app/Collisions.hs"
+    - path: "./lib/Collisions.hs"
       component: "sokoban:exe:sokoban-exe"
 
-    - path: "./app/Render.hs"
+    - path: "./lib/Render.hs"
       component: "sokoban:exe:sokoban-exe"
 
-    - path: "./app/Load.hs"
-      component: "sokoban:exe:sokoban-exe"
-
-    - path: "./app/Paths_sokoban.hs"
+    - path: "./lib/Load.hs"
       component: "sokoban:exe:sokoban-exe"

@@ -13,7 +13,7 @@ import Load
 
 update :: Float -> GameState -> GameState
 update _ gs =
-  gs move (direction gs) gs
+  move (direction gs) gs
 
 
 main :: IO ()
