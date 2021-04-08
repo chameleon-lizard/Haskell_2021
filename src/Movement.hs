@@ -34,7 +34,7 @@ handleKeys _ gs = gs {direction = None}
 
 checkSpeed :: GameState -> Float
 checkSpeed gs
-  | direction gs == U || direction gs == R || direction gs == L || direction gs == D = tileSize 
+  | direction gs == U || direction gs == R || direction gs == L || direction gs == D = tileSize
   | otherwise = 0
 
 move :: MoveDirection -> GameState -> GameState
@@ -45,14 +45,16 @@ move R gs =
           gs
           (fst (position gs) + speed gs, snd (position gs))
           'b'
-          && isCollision
-            gs
-            (fst (position gs) + tileSize, snd (position gs))
-            '*'
-          || isCollision
-            gs
-            (fst (position gs) + tileSize, snd (position gs))
-            'b'
+          && not
+            ( isCollision
+                gs
+                (fst (position gs) + tileSize * 2, snd (position gs))
+                '*'
+                || isCollision
+                  gs
+                  (fst (position gs) + tileSize * 2, snd (position gs))
+                  'b'
+            )
           then
             GameState
               { position = (fst (position gs) + speed gs, snd (position gs)),
@@ -67,14 +69,20 @@ move R gs =
                 speed = checkSpeed gs
               }
           else
-            GameState
-              { position = (fst (position gs) + speed gs, snd (position gs)),
-                direction = None,
-                heading = heading gs,
-                currentLevel = currentLevel gs,
-                spriteCount = spriteCount gs,
-                speed = checkSpeed gs
-              }
+            if isCollision
+              gs
+              (fst (position gs) + speed gs, snd (position gs))
+              'b'
+              then gs
+              else
+                GameState
+                  { position = (fst (position gs) + speed gs, snd (position gs)),
+                    direction = None,
+                    heading = heading gs,
+                    currentLevel = currentLevel gs,
+                    spriteCount = spriteCount gs,
+                    speed = checkSpeed gs
+                  }
       )
     else gs
 move L gs =
@@ -84,15 +92,16 @@ move L gs =
           gs
           (fst (position gs) + speed gs * (- 1), snd (position gs))
           'b'
-          && ( isCollision
-                 gs
-                 (fst (position gs) + tileSize * (-1), snd (position gs))
-                 '*'
-                 || isCollision
-                   gs
-                   (fst (position gs) + tileSize * (-1), snd (position gs))
-                   'b'
-             )
+          && not
+            ( isCollision
+                gs
+                (fst (position gs) + tileSize * (-2), snd (position gs))
+                '*'
+                || isCollision
+                  gs
+                  (fst (position gs) + tileSize * (-2), snd (position gs))
+                  'b'
+            )
           then
             GameState
               { position =
@@ -110,17 +119,23 @@ move L gs =
                 speed = checkSpeed gs
               }
           else
-            GameState
-              { position =
-                  ( fst (position gs) + speed gs * (- 1),
-                    snd (position gs)
-                  ),
-                direction = None,
-                heading = heading gs,
-                currentLevel = currentLevel gs,
-                spriteCount = spriteCount gs,
-                speed = checkSpeed gs
-              }
+            if isCollision
+              gs
+              (fst (position gs) + speed gs * (-1), snd (position gs))
+              'b'
+              then gs
+              else
+                GameState
+                  { position =
+                      ( fst (position gs) + speed gs * (- 1),
+                        snd (position gs)
+                      ),
+                    direction = None,
+                    heading = heading gs,
+                    currentLevel = currentLevel gs,
+                    spriteCount = spriteCount gs,
+                    speed = checkSpeed gs
+                  }
       )
     else gs
 move U gs =
@@ -130,15 +145,16 @@ move U gs =
           gs
           (fst (position gs), snd (position gs) + speed gs)
           'b'
-          && ( isCollision
-                 gs
-                 (fst (position gs), snd (position gs) + tileSize)
-                 '*'
-                 || isCollision
-                   gs
-                   (fst (position gs), snd (position gs) + tileSize)
-                   'b'
-             )
+          && not
+            ( isCollision
+                gs
+                (fst (position gs), snd (position gs) + tileSize * 2)
+                '*'
+                || isCollision
+                  gs
+                  (fst (position gs), snd (position gs) + tileSize * 2)
+                  'b'
+            )
           then
             GameState
               { position = (fst (position gs), snd (position gs) + speed gs),
@@ -153,14 +169,20 @@ move U gs =
                 speed = checkSpeed gs
               }
           else
-            GameState
-              { position = (fst (position gs), snd (position gs) + speed gs),
-                direction = None,
-                heading = heading gs,
-                currentLevel = currentLevel gs,
-                spriteCount = spriteCount gs,
-                speed = checkSpeed gs
-              }
+            if isCollision
+              gs
+              (fst (position gs), snd (position gs) + speed gs)
+              'b'
+              then gs
+              else
+                GameState
+                  { position = (fst (position gs), snd (position gs) + speed gs),
+                    direction = None,
+                    heading = heading gs,
+                    currentLevel = currentLevel gs,
+                    spriteCount = spriteCount gs,
+                    speed = checkSpeed gs
+                  }
       )
     else gs
 move D gs =
@@ -170,15 +192,16 @@ move D gs =
           gs
           (fst (position gs), snd (position gs) + speed gs * (- 1))
           'b'
-          && ( isCollision
-                 gs
-                 (fst (position gs), snd (position gs) + tileSize * (-1))
-                 '*'
-                 || isCollision
-                   gs
-                   (fst (position gs), snd (position gs) + tileSize * (-1))
-                   'b'
-             )
+          && not
+            ( isCollision
+                gs
+                (fst (position gs), snd (position gs) + tileSize * (-2))
+                '*'
+                || isCollision
+                  gs
+                  (fst (position gs), snd (position gs) + tileSize * (-2))
+                  'b'
+            )
           then
             GameState
               { position =
@@ -189,24 +212,30 @@ move D gs =
                 heading = heading gs,
                 currentLevel =
                   moveBox
-                    (fst (position gs), snd (position gs) + tileSize * (- 1))
+                    (fst (position gs), snd (position gs) + tileSize * (-1))
                     D
                     (currentLevel gs),
                 spriteCount = spriteCount gs,
                 speed = checkSpeed gs
               }
           else
-            GameState
-              { position =
-                  ( fst (position gs),
-                    snd (position gs) + speed gs * (- 1)
-                  ),
-                direction = None,
-                heading = heading gs,
-                currentLevel = currentLevel gs,
-                spriteCount = spriteCount gs,
-                speed = checkSpeed gs
-              }
+            if isCollision
+              gs
+              (fst (position gs), snd (position gs) + speed gs * (-1))
+              'b'
+              then gs
+              else
+                GameState
+                  { position =
+                      ( fst (position gs),
+                        snd (position gs) + speed gs * (- 1)
+                      ),
+                    direction = None,
+                    heading = heading gs,
+                    currentLevel = currentLevel gs,
+                    spriteCount = spriteCount gs,
+                    speed = checkSpeed gs
+                  }
       )
     else gs
 move _ gs =
