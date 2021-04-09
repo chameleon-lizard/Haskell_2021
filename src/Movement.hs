@@ -14,8 +14,8 @@ moveBox :: Point -> MoveDirection -> Level -> Level
 moveBox pt dir level
   | moveCell == 'f' && moveToCell == '.' = changeType (changeType level box 's') box' 'b'
   | moveCell == 'f' && moveToCell == 's' = changeType (changeType level box 's') box' 'f'
-  | moveToCell == '.' = changeType (changeType level box '.') box' 'b'
-  | moveToCell == 's' = changeType (changeType level box '.') box' 'f'
+  | moveCell == 'b' && moveToCell == '.' = changeType (changeType level box '.') box' 'b'
+  | moveCell == 'b' && moveToCell == 's' = changeType (changeType level box '.') box' 'f'
   where
     box = fst (head (filter (\((x, y), tileType) -> (tileType == 'b' || tileType == 'f') && isHit pt (x, y)) level))
     box'

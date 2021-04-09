@@ -27,15 +27,16 @@ main = do
   rawData <- readFile "assets/level"
 
   let level = prepareData $ reverse $ lines rawData
+  let pos = fst (head (filter (\x -> snd x == '@') level))
 
   play
     window
     background
     fps
     GameState
-      { position = fst (head (filter (\x -> snd x == '@') level)),
+      { position = pos,
         direction = None,
-        currentLevel = level,
+        currentLevel = changeType level pos '.',
         spriteCount = 0,
         heading = FL,
         speed = 0
