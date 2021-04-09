@@ -12,7 +12,7 @@ makeRow row y =
       row !! x
     )
     | x <- [0 .. length row - 1],
-      row !! x == 's' || row !! x == 'b' || row !! x == '*' || row !! x == '@' || row !! x == '.'
+      row !! x == 's' || row !! x == 'b' || row !! x == '*' || row !! x == '@' || row !! x == '.' || row !! x == 'f'
   ]
 
 prepareData :: [String] -> Level

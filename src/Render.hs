@@ -6,9 +6,10 @@ import Types
 -------------------------------------------------------------------------------
 
 whatImg :: Cell -> [Picture] -> Picture
-whatImg (_, cellType) [wall, storage, box, floor, _]
+whatImg (_, cellType) [wall, storage, box, finished, floor, _]
   | cellType == 'b' = box
   | cellType == 's' = storage
+  | cellType == 'f' = finished
   | cellType == '*' = wall
   | otherwise = floor
 
@@ -23,6 +24,6 @@ render gs imgs =
         ++ [ uncurry
                translate
                (position gs)
-               (imgs !! 4)
+               (imgs !! (length imgs - 1))
            ]
     )

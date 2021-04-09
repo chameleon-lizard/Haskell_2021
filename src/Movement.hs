@@ -11,15 +11,21 @@ changeType :: Level -> Point -> CellType -> Level
 changeType level pt cell = map (\((x, y), tileType) -> if (x == fst pt) && (y == snd pt) then ((x, y), cell) else ((x, y), tileType)) level
 
 moveBox :: Point -> MoveDirection -> Level -> Level
-moveBox pt dir level = changeType (changeType level box '.') box' 'b'
+moveBox pt dir level
+  | moveCell == 'f' && moveToCell == '.' = changeType (changeType level box 's') box' 'b'
+  | moveCell == 'f' && moveToCell == 's' = changeType (changeType level box 's') box' 'f'
+  | moveToCell == '.' = changeType (changeType level box '.') box' 'b'
+  | moveToCell == 's' = changeType (changeType level box '.') box' 'f'
   where
-    box = fst (head (filter (\((x, y), tileType) -> tileType == 'b' && isHit pt (x, y)) level))
+    box = fst (head (filter (\((x, y), tileType) -> (tileType == 'b' || tileType == 'f') && isHit pt (x, y)) level))
     box'
       | dir == D = (fst box, snd box - tileSize)
       | dir == U = (fst box, snd box + tileSize)
       | dir == L = (fst box - tileSize, snd box)
       | dir == R = (fst box + tileSize, snd box)
       | otherwise = box
+    moveToCell = snd (head (filter (\((x, y), tileType) -> x == fst box' && y == snd box') level))
+    moveCell = snd (head (filter (\((x, y), tileType) -> x == fst box && y == snd box) level))
 
 handleKeys :: Event -> GameState -> GameState
 handleKeys (EventKey (SpecialKey KeyLeft) Down _ _) gs =
@@ -41,10 +47,15 @@ move :: MoveDirection -> GameState -> GameState
 move R gs =
   if not (isCollision gs (fst (position gs) + speed gs, snd (position gs)) '*')
     then
-      ( if isCollision
-          gs
-          (fst (position gs) + speed gs, snd (position gs))
-          'b'
+      ( if ( isCollision
+               gs
+               (fst (position gs) + speed gs, snd (position gs))
+               'b'
+               || isCollision
+                 gs
+                 (fst (position gs) + speed gs, snd (position gs))
+                 'f'
+           )
           && not
             ( isCollision
                 gs
@@ -54,6 +65,10 @@ move R gs =
                   gs
                   (fst (position gs) + tileSize * 2, snd (position gs))
                   'b'
+                || isCollision
+                  gs
+                  (fst (position gs) + tileSize * 2, snd (position gs))
+                  'f'
             )
           then
             GameState
@@ -73,6 +88,10 @@ move R gs =
               gs
               (fst (position gs) + speed gs, snd (position gs))
               'b'
+              || isCollision
+                gs
+                (fst (position gs) + speed gs, snd (position gs))
+                'f'
               then gs
               else
                 GameState
@@ -88,10 +107,15 @@ move R gs =
 move L gs =
   if not (isCollision gs (fst (position gs) + speed gs * (-1), snd (position gs)) '*')
     then
-      ( if isCollision
-          gs
-          (fst (position gs) + speed gs * (- 1), snd (position gs))
-          'b'
+      ( if ( isCollision
+               gs
+               (fst (position gs) + speed gs * (- 1), snd (position gs))
+               'b'
+               || isCollision
+                 gs
+                 (fst (position gs) + speed gs * (- 1), snd (position gs))
+                 'f'
+           )
           && not
             ( isCollision
                 gs
@@ -101,6 +125,10 @@ move L gs =
                   gs
                   (fst (position gs) + tileSize * (-2), snd (position gs))
                   'b'
+                || isCollision
+                  gs
+                  (fst (position gs) + tileSize * (-2), snd (position gs))
+                  'f'
             )
           then
             GameState
@@ -123,6 +151,10 @@ move L gs =
               gs
               (fst (position gs) + speed gs * (-1), snd (position gs))
               'b'
+              || isCollision
+                gs
+                (fst (position gs) + speed gs * (-1), snd (position gs))
+                'f'
               then gs
               else
                 GameState
@@ -141,10 +173,15 @@ move L gs =
 move U gs =
   if not (isCollision gs (fst (position gs), snd (position gs) + speed gs) '*')
     then
-      ( if isCollision
-          gs
-          (fst (position gs), snd (position gs) + speed gs)
-          'b'
+      ( if ( isCollision
+               gs
+               (fst (position gs), snd (position gs) + speed gs)
+               'b'
+               || isCollision
+                 gs
+                 (fst (position gs), snd (position gs) + speed gs)
+                 'f'
+           )
           && not
             ( isCollision
                 gs
@@ -154,6 +191,10 @@ move U gs =
                   gs
                   (fst (position gs), snd (position gs) + tileSize * 2)
                   'b'
+                || isCollision
+                  gs
+                  (fst (position gs), snd (position gs) + tileSize * 2)
+                  'f'
             )
           then
             GameState
@@ -173,6 +214,10 @@ move U gs =
               gs
               (fst (position gs), snd (position gs) + speed gs)
               'b'
+              || isCollision
+                gs
+                (fst (position gs), snd (position gs) + speed gs)
+                'f'
               then gs
               else
                 GameState
@@ -188,10 +233,15 @@ move U gs =
 move D gs =
   if not (isCollision gs (fst (position gs), snd (position gs) + speed gs * (-1)) '*')
     then
-      ( if isCollision
-          gs
-          (fst (position gs), snd (position gs) + speed gs * (- 1))
-          'b'
+      ( if ( isCollision
+               gs
+               (fst (position gs), snd (position gs) + speed gs * (- 1))
+               'b'
+               || isCollision
+                 gs
+                 (fst (position gs), snd (position gs) + speed gs * (- 1))
+                 'f'
+           )
           && not
             ( isCollision
                 gs
@@ -201,6 +251,10 @@ move D gs =
                   gs
                   (fst (position gs), snd (position gs) + tileSize * (-2))
                   'b'
+                || isCollision
+                  gs
+                  (fst (position gs), snd (position gs) + tileSize * (-2))
+                  'f'
             )
           then
             GameState
@@ -220,9 +274,13 @@ move D gs =
               }
           else
             if isCollision
-              gs
-              (fst (position gs), snd (position gs) + speed gs * (-1))
-              'b'
+                   gs
+                   (fst (position gs), snd (position gs) + speed gs * (-1))
+                   'b'
+                   || isCollision
+                     gs
+                     (fst (position gs), snd (position gs) + speed gs * (-1))
+                     'f'
               then gs
               else
                 GameState
