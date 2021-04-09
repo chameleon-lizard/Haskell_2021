@@ -37,8 +37,6 @@ main = do
       { position = pos,
         direction = None,
         currentLevel = changeType level pos '.',
-        spriteCount = 0,
-        heading = FL,
         speed = 0
       }
     ( `render`

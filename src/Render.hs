@@ -5,6 +5,10 @@ import Types
 
 -------------------------------------------------------------------------------
 
+window :: Display
+window = InWindow "Dis is gaem" (1024, 768) (0, 0)
+
+
 whatImg :: Cell -> [Picture] -> Picture
 whatImg (_, cellType) [wall, storage, box, finished, floor, _, _]
   | cellType == 'b' = box

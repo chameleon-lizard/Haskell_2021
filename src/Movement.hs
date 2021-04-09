@@ -29,13 +29,13 @@ moveBox pt dir level
 
 handleKeys :: Event -> GameState -> GameState
 handleKeys (EventKey (SpecialKey KeyLeft) Down _ _) gs =
-  gs {direction = L, heading = FL}
+  gs {direction = L}
 handleKeys (EventKey (SpecialKey KeyRight) Down _ _) gs =
-  gs {direction = R, heading = FR}
+  gs {direction = R}
 handleKeys (EventKey (SpecialKey KeyUp) Down _ _) gs =
-  gs {direction = U, heading = FU}
+  gs {direction = U}
 handleKeys (EventKey (SpecialKey KeyDown) Down _ _) gs =
-  gs {direction = D, heading = FD}
+  gs {direction = D}
 handleKeys _ gs = gs {direction = None}
 
 checkSpeed :: GameState -> Float
@@ -74,13 +74,11 @@ move R gs =
             GameState
               { position = (fst (position gs) + speed gs, snd (position gs)),
                 direction = None,
-                heading = heading gs,
                 currentLevel =
                   moveBox
                     (fst (position gs) + tileSize, snd (position gs))
                     R
                     (currentLevel gs),
-                spriteCount = spriteCount gs,
                 speed = checkSpeed gs
               }
           else
@@ -97,9 +95,7 @@ move R gs =
                 GameState
                   { position = (fst (position gs) + speed gs, snd (position gs)),
                     direction = None,
-                    heading = heading gs,
                     currentLevel = currentLevel gs,
-                    spriteCount = spriteCount gs,
                     speed = checkSpeed gs
                   }
       )
@@ -137,13 +133,11 @@ move L gs =
                     snd (position gs)
                   ),
                 direction = None,
-                heading = heading gs,
                 currentLevel =
                   moveBox
                     (fst (position gs) + tileSize * (- 1), snd (position gs))
                     L
                     (currentLevel gs),
-                spriteCount = spriteCount gs,
                 speed = checkSpeed gs
               }
           else
@@ -163,9 +157,7 @@ move L gs =
                         snd (position gs)
                       ),
                     direction = None,
-                    heading = heading gs,
                     currentLevel = currentLevel gs,
-                    spriteCount = spriteCount gs,
                     speed = checkSpeed gs
                   }
       )
@@ -200,13 +192,11 @@ move U gs =
             GameState
               { position = (fst (position gs), snd (position gs) + speed gs),
                 direction = None,
-                heading = heading gs,
                 currentLevel =
                   moveBox
                     (fst (position gs), snd (position gs) + tileSize)
                     U
                     (currentLevel gs),
-                spriteCount = spriteCount gs,
                 speed = checkSpeed gs
               }
           else
@@ -223,9 +213,7 @@ move U gs =
                 GameState
                   { position = (fst (position gs), snd (position gs) + speed gs),
                     direction = None,
-                    heading = heading gs,
                     currentLevel = currentLevel gs,
-                    spriteCount = spriteCount gs,
                     speed = checkSpeed gs
                   }
       )
@@ -263,13 +251,11 @@ move D gs =
                     snd (position gs) + speed gs * (- 1)
                   ),
                 direction = None,
-                heading = heading gs,
                 currentLevel =
                   moveBox
                     (fst (position gs), snd (position gs) + tileSize * (-1))
                     D
                     (currentLevel gs),
-                spriteCount = spriteCount gs,
                 speed = checkSpeed gs
               }
           else
@@ -289,9 +275,7 @@ move D gs =
                         snd (position gs) + speed gs * (- 1)
                       ),
                     direction = None,
-                    heading = heading gs,
                     currentLevel = currentLevel gs,
-                    spriteCount = spriteCount gs,
                     speed = checkSpeed gs
                   }
       )
