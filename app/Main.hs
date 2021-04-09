@@ -12,11 +12,7 @@ import Types
 -------------------------------------------------------------------------------
 
 update :: Float -> GameState -> GameState
-update _ gs
-  | not gameEnded = move (direction gs) gs
-  | otherwise = gs
-  where
-    gameEnded = not (any (\x -> snd x == 's') (currentLevel gs))
+update _ gs = move (direction gs) gs
 
 -- Reading stuff, not pure
 main :: IO ()
@@ -27,6 +23,7 @@ main = do
   finishedImg <- loadBMP "assets/finished.bmp"
   playerImg <- loadBMP "assets/player.bmp"
   floorImg <- loadBMP "assets/floor.bmp"
+  splashScreen <- loadBMP "assets/splashScreen.bmp"
   rawData <- readFile "assets/level"
 
   let level = prepareData $ reverse $ lines rawData
@@ -49,7 +46,8 @@ main = do
           boxImg,
           finishedImg,
           floorImg,
-          playerImg
+          playerImg,
+          splashScreen
         ]
     )
     handleKeys

@@ -274,13 +274,13 @@ move D gs =
               }
           else
             if isCollision
-                   gs
-                   (fst (position gs), snd (position gs) + speed gs * (-1))
-                   'b'
-                   || isCollision
-                     gs
-                     (fst (position gs), snd (position gs) + speed gs * (-1))
-                     'f'
+              gs
+              (fst (position gs), snd (position gs) + speed gs * (-1))
+              'b'
+              || isCollision
+                gs
+                (fst (position gs), snd (position gs) + speed gs * (-1))
+                'f'
               then gs
               else
                 GameState
