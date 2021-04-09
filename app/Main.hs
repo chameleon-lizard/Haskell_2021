@@ -27,27 +27,31 @@ main = do
   rawData <- readFile "assets/level"
 
   let level = prepareData $ reverse $ lines rawData
-  let pos = fst (head (filter (\x -> snd x == '@') level))
+  let pos = fst (head (filter (\x -> snd x == Pl) level))
 
-  play
-    window
-    background
-    fps
-    GameState
-      { position = pos,
-        direction = None,
-        currentLevel = changeType level pos '.',
-        speed = 0
-      }
-    ( `render`
-        [ wallImg,
-          storageImg,
-          boxImg,
-          finishedImg,
-          floorImg,
-          playerImg,
-          splashScreen
-        ]
-    )
-    handleKeys
-    update
+  if length (filter (\x -> snd x == Pl) level) /= 1
+    then
+      print "Дурачок."
+    else
+      play
+        window
+        background
+        fps
+        GameState
+          { position = pos,
+            direction = None,
+            currentLevel = changeType level pos Fl,
+            speed = 0
+          }
+        (`render`
+          [ wallImg,
+            storageImg,
+            boxImg,
+            finishedImg,
+            floorImg,
+            playerImg,
+            splashScreen
+          ]
+        )
+        handleKeys
+        update

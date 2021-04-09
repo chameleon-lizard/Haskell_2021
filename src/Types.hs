@@ -13,14 +13,21 @@ data MoveDirection
   | None
   deriving (Eq)
 
+data CellType
+    = Bx
+    | Fi
+    | Fl
+    | Pl
+    | Ds
+    | Wl
+    deriving (Eq)
+
 data GameState = GameState
   { position :: Point,
     direction :: MoveDirection,
     currentLevel :: Level,
     speed :: Float
   }
-
-type CellType = Char
 
 type Cell = (Point, CellType)
 
