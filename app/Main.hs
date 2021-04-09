@@ -29,9 +29,9 @@ main = do
   let level = prepareData $ reverse $ lines rawData
   let pos = fst (head (filter (\x -> snd x == Pl) level))
 
-  if length (filter (\x -> snd x == Pl) level) /= 1
+  if length (filter (\x -> snd x == Pl) level) /= 1 || length (filter (\x -> snd x == Ds) level) /= length (filter (\x -> snd x == Bx) level)
     then
-      print "Дурачок."
+      print "Wrong map format."
     else
       play
         window
