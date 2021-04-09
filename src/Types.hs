@@ -32,3 +32,5 @@ tileSize = 32.0
 fps :: Int
 fps = 60
 
+background :: Color 
+background = black
