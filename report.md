@@ -10,12 +10,12 @@
 
 - Main. Модуль, в котором вершится магия. Есть функция main и функция update, требуемая Gloss'ом.
 - Types. Модуль, в котором описаны использующиеся типы. Типы:
-        - GameState {Point, MoveDirection, Level, Float}
-        - CellType - Char
-        - Cell - (Point, CellType)
-        - Level - [Cell]
-        - TileSize - Float
-        - MoveDirection - Направление движения. UDLR и None.
+        1. GameState {Point, MoveDirection, Level, Float};
+        2. CellType - Char;
+        3. Cell - (Point, CellType);
+        4. Level - [Cell];
+        5. TileSize - Float;
+        6. MoveDirection - Направление движения. UDLR и None.
 - Load. Модуль, в котором происходит парсинг файла с картой. Функции prepareData и makeRow.
 - Collisions. Модуль, в котором происходит проверка коллизий. Функции - isHit и isCollision.
 - Movement. Модуль, в котором обрабатывается движение и сдвиг ящиков. Функции - changeType, moveBox, handleKeys, move.
